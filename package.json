@@ -1,0 +1,68 @@
+{
+  "name": "mobx-vue",
+  "version": "0.0.1",
+  "description": "mobx connector to vue",
+  "main": "index.js",
+  "scripts": {
+    "start": "jest",
+    "build": "tsc --exclude ",
+    "lint": "tslint 'src/**/*.ts'",
+    "prepush": "npm run lint",
+    "test": "jest --coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kuitos/mobx-vue.git"
+  },
+  "keywords": [
+    "mobx",
+    "vue",
+    "connector"
+  ],
+  "author": "Kuitos",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kuitos/mobx-vue/issues"
+  },
+  "homepage": "https://github.com/kuitos/mobx-vue#readme",
+  "dependencies": {
+    "mobx": "*",
+    "vue": "^2.0.0",
+    "tslib": "^1.9.1"
+  },
+  "devDependencies": {
+    "@types/jest": "^22.2.3",
+    "@vue/test-utils": "^1.0.0-beta.16",
+    "husky": "^0.14.3",
+    "jest": "^21.2.1",
+    "ts-jest": "^22.4.6",
+    "tslint": "^5.10.0",
+    "tslint-eslint-rules": "^5.3.1",
+    "typescript": "^2.8.3",
+    "vue-class-component": "^6.2.0",
+    "vue-jest": "^2.6.0",
+    "vue-template-compiler": "^2.5.16"
+  },
+  "jest": {
+    "globals": {
+      "vue-jest": {
+        "tsConfigFile": "tsconfig.json"
+      }
+    },
+    "moduleFileExtensions": [
+      "js",
+      "ts",
+      "vue"
+    ],
+    "moduleNameMapper": {
+      "^@/(.*)$": "<rootDir>/src/$1"
+    },
+    "testMatch": [
+      "<rootDir>/src/**/__tests__/**/*.spec.ts"
+    ],
+    "transform": {
+      "^.+\\.ts$": "<rootDir>/node_modules/ts-jest",
+      ".*\\.(vue)$": "<rootDir>/node_modules/vue-jest"
+    }
+  }
+}
