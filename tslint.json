@@ -4,6 +4,7 @@
 	"tslint:recommended",
 	"tslint-eslint-rules"
   ],
+
   "jsRules": {},
   "rules": {
 	"indent": [

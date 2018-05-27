@@ -4,7 +4,7 @@
  * @since 2018-05-22 16:39
  */
 import { Reaction } from 'mobx';
-import Vue from 'vue';
+import Vue, { ComponentOptions, PropOptions } from 'vue';
 import collectProperties from './collectProperties';
 import { VueClass } from './declarations';
 
@@ -28,10 +28,10 @@ function addBindings(model: any, vm: Vue) {
 	return {};
 }
 
-const connect = (model: any) => (VueComponent: VueClass<Vue> | object) => {
+const connect = (model: any) => (VueComponent: VueClass<Vue> | ComponentOptions<Vue>): VueClass<Vue> => {
 
 	const componentName = (VueComponent as any).name || (VueComponent as any)._componentTag || (VueComponent.constructor && VueComponent.constructor.name) || '<component>';
-	const Component = typeof VueComponent === 'object' ? Vue.extend(VueComponent) : VueComponent;
+	const Component = typeof VueComponent === 'function' && VueComponent.prototype instanceof Vue ? VueComponent : Vue.extend(VueComponent);
 
 	const { $mount, $destroy } = Component.prototype;
 	let dispose = noop;
@@ -65,10 +65,13 @@ const connect = (model: any) => (VueComponent: VueClass<Vue> | object) => {
 		$destroy.apply(this, args);
 	};
 
-	return Component.extend({ data: (vm: Vue) => addBindings(model, vm) });
+	(Component as any).options = { ...(Component as any).options, data: (vm: Vue) => addBindings(model, vm) };
+
+	return Component;
 };
 
 export {
+	PropOptions,
 	connect,
 	connect as Connect,
 };

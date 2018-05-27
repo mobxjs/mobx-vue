@@ -2,13 +2,18 @@
   "name": "mobx-vue",
   "version": "0.0.1",
   "description": "mobx connector to vue",
-  "main": "index.js",
+  "main": "./lib/index.js",
+  "module": "./esm/index.js",
+  "sideEffects": false,
   "scripts": {
-    "start": "jest",
-    "build": "tsc --exclude ",
-    "lint": "tslint 'src/**/*.ts'",
+    "start": "jest -o --watch --coverage false",
+    "build": "npm run build:esm & npm run build:cjs",
+    "build:esm": "rm -fr dist/esm && tsc",
+    "build:cjs": "rm -fr dist/cjs && tsc -p tsconfig.cjs.json",
+    "lint": "tslint 'src/**/*.ts' && npm test",
+    "codecov": "codecov",
     "prepush": "npm run lint",
-    "test": "jest --coverage"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -32,9 +37,9 @@
   },
   "devDependencies": {
     "@types/jest": "^22.2.3",
-    "@vue/test-utils": "^1.0.0-beta.16",
+    "codecov": "^3.0.2",
     "husky": "^0.14.3",
-    "jest": "^21.2.1",
+    "jest": "^23.0.0",
     "ts-jest": "^22.4.6",
     "tslint": "^5.10.0",
     "tslint-eslint-rules": "^5.3.1",
@@ -55,7 +60,7 @@
       "vue"
     ],
     "moduleNameMapper": {
-      "^@/(.*)$": "<rootDir>/src/$1"
+      "^@vue/(.*)$": "<rootDir>/lib/$1"
     },
     "testMatch": [
       "<rootDir>/src/**/__tests__/**/*.spec.ts"
@@ -63,6 +68,12 @@
     "transform": {
       "^.+\\.ts$": "<rootDir>/node_modules/ts-jest",
       ".*\\.(vue)$": "<rootDir>/node_modules/vue-jest"
-    }
+    },
+    "collectCoverage": true,
+    "coveragePathIgnorePatterns": [
+      "/node_modules/",
+      "/__tests__/",
+      "/lib/"
+    ]
   }
 }

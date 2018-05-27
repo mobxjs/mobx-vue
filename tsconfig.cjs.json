@@ -1,0 +1,11 @@
+{
+  "extends": "./tsconfig",
+  "compilerOptions": {
+	"module": "es2015",
+	"outDir": "dist/lib",
+	"moduleResolution": "node"
+  },
+  "exclude": [
+	"**/__tests__/**"
+  ]
+}
