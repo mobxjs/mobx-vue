@@ -5,4 +5,4 @@
 [![npm downloads](https://img.shields.io/npm/dt/mobx-vue.svg?style=flat-square)](https://www.npmjs.com/package/mobx-vue)
 [![coverage](https://img.shields.io/codecov/c/github/mmlpxjs/mobx-vue.svg?style=flat-square)](https://codecov.io/gh/mmlpxjs/mobx-vue)
 
-mobx connector to vue
+Vue bindings for MobX

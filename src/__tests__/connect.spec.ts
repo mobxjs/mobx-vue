@@ -140,5 +140,3 @@ describe('use connect decorator with a class component and observable model clas
 	});
 
 });
-
-
