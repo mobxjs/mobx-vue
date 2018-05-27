@@ -1,6 +1,6 @@
 node_modules/
 .idea/
 coverage/
-dist/
+/dist/
 .DS_Store
 example/
