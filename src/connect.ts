@@ -28,15 +28,19 @@ function addBindings(model: any, vm: Vue) {
 	return {};
 }
 
-const connect = (model: any) => (VueComponent: VueClass<Vue> | ComponentOptions<Vue>): VueClass<Vue> => {
+const connect = (model: any) => (Component: VueClass<Vue> | ComponentOptions<Vue>): VueClass<Vue> => {
 
-	const componentName = (VueComponent as any).name || (VueComponent as any)._componentTag || (VueComponent.constructor && VueComponent.constructor.name) || '<component>';
-	const Component = typeof VueComponent === 'function' && VueComponent.prototype instanceof Vue ? VueComponent : Vue.extend(VueComponent);
+	const name = (Component as any).name || (Component as any)._componentTag || (Component.constructor && Component.constructor.name) || '<component>';
 
-	const { $mount, $destroy } = Component.prototype;
+	const options = { ...(typeof Component === 'object' ? Component : {}), name, data: (vm: Vue) => addBindings(model, vm) };
+	const Super = typeof Component === 'function' && Component.prototype instanceof Vue ? Component : Vue;
+	const ExtendedComponent = Super.extend(options);
+
 	let dispose = noop;
 
-	Component.prototype.$mount = function (this: any, ...args: any[]) {
+	const { $mount, $destroy } = ExtendedComponent.prototype;
+
+	ExtendedComponent.prototype.$mount = function (this: any, ...args: any[]) {
 
 		let mounted = false;
 
@@ -53,21 +57,19 @@ const connect = (model: any) => (VueComponent: VueClass<Vue> | ComponentOptions<
 			return this;
 		};
 
-		const reaction = new Reaction(`${componentName}.render()`, reactiveRender);
+		const reaction = new Reaction(`${name}.render()`, reactiveRender);
 
 		dispose = reaction.getDisposer();
 
 		return reactiveRender();
 	};
 
-	Component.prototype.$destroy = function (this: any, ...args: any[]) {
+	ExtendedComponent.prototype.$destroy = function (this: any, ...args: any[]) {
 		dispose();
 		$destroy.apply(this, args);
 	};
 
-	(Component as any).options = { ...(Component as any).options, data: (vm: Vue) => addBindings(model, vm) };
-
-	return Component;
+	return ExtendedComponent;
 };
 
 export {

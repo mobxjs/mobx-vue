@@ -36,6 +36,7 @@ test('connect with a object literal component', () => {
 	wrapper.find('button').trigger('click');
 	expect(wrapper.find('button').text()).toBe('11');
 
+	wrapper.destroy();
 });
 
 test('connect with a base component', () => {
@@ -56,6 +57,8 @@ test('connect with a base component', () => {
 	wrapper.find('button').trigger('click');
 	expect(wrapper.find('p').text()).toBe('11');
 
+	wrapper.destroy();
+
 });
 
 test('connect with a class component', () => {
@@ -71,11 +74,12 @@ test('connect with a class component', () => {
 
 	const wrapper = shallowMount(Component);
 	expect(wrapper.name()).toBe(ClassBase.name);
-	expect(wrapper.find('p').text()).toBe('10');
+	expect(wrapper.find('[role="age"]').text()).toBe('10');
 
 	wrapper.find('button').trigger('click');
-	expect(wrapper.find('p').text()).toBe('11');
+	expect(wrapper.find('[role="age"]').text()).toBe('11');
 
+	wrapper.destroy();
 });
 
 test('connect with a class component and observable model constructed with class', () => {
@@ -97,6 +101,8 @@ test('connect with a class component and observable model constructed with class
 
 	const model = new Model();
 
+	// clear vue component constructor cache
+	(ClassBase as any).options._Ctor = {};
 	const Component = connect(model)(ClassBase);
 
 	const wrapper = shallowMount(Component);
@@ -108,6 +114,8 @@ test('connect with a class component and observable model constructed with class
 	expect(wrapper.find('[role=age]').text()).toBe('11');
 	expect(wrapper.find('[role="computed-age"]').text()).toBe('12');
 
+	wrapper.destroy();
+
 });
 
 describe('use connect decorator with a class component and observable model class', () => {
@@ -115,7 +123,7 @@ describe('use connect decorator with a class component and observable model clas
 	const wrapper = shallowMount(DecoratedClassBase);
 	test('component should be reactive', () => {
 
-		expect(wrapper.name()).toBe(DecoratedClassBase.name);
+		expect(wrapper.name()).toBe((DecoratedClassBase as any).options.name);
 		expect(wrapper.find('[role="age"]').text()).toBe('10');
 		expect(wrapper.find('[role="computed-age"]').text()).toBe('11');
 
@@ -123,6 +131,8 @@ describe('use connect decorator with a class component and observable model clas
 		wrapper.find('button').trigger('click');
 		expect(wrapper.find('[role=age]').text()).toBe('12');
 		expect(wrapper.find('[role="computed-age"]').text()).toBe('13');
+
+		wrapper.destroy();
 
 	});
 

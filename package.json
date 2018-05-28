@@ -9,7 +9,7 @@
     "start": "jest -o --watch --coverage false",
     "build": "npm run build:esm & npm run build:cjs",
     "build:esm": "rm -fr dist/esm && tsc",
-    "build:cjs": "rm -fr dist/cjs && tsc -p tsconfig.cjs.json",
+    "build:cjs": "rm -fr dist/lib && tsc -p tsconfig.cjs.json",
     "lint": "tslint 'src/**/*.ts' && npm test",
     "codecov": "codecov",
     "prepush": "npm run lint",

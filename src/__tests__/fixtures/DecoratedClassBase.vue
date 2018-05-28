@@ -30,6 +30,5 @@
 
 	@Connect(new Model())
 	@Component()
-	export default class DecoratedClassBase extends Vue {
-	}
+	export default class DecoratedClassBase extends Vue {}
 </script>
