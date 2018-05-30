@@ -18,14 +18,14 @@ npm i mobx-vue -S
 or
 
 ```bash
-yarn add mobx-uve
+yarn add mobx-vue
 ```
 
 ## Why mobx-vue 
 
 MobX is an unopinionated, scalable state management, which can make our programming more intuitive.
 
-Unlike the other vue-rx-inspired libraries which based the plugin mechanism of vue, mobx-vue is more simple that you just need to connect your state to vue component without any component definition changed like [react-redux](https://github.com/reactjs/react-redux) does,  then your component will react to your state changes automatically.
+Unlike the other vue-rx-inspired libraries which based the plugin mechanism of vue, mobx-vue will be the simplest you ever meet. What you just need is to connect your state to vue component without any component definition changed like [react-redux](https://github.com/reactjs/react-redux) does,  then your component will react to your state changes automatically.
 
 And, the most important is that you can build a view-library-free application with mobx which manages your app state, if you wanna migrate to another view library(React/Angular) someday, rewrite the template and switch to the relevant mobx connector([mobx-react](https://github.com/mobxjs/mobx-react),[mobx-angular](https://github.com/mobxjs/mobx-angular),[mobx-angularjs](https://github.com/mobxjs/mobx-angularjs)) is all you have to do.
 
