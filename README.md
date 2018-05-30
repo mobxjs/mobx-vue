@@ -7,7 +7,10 @@
 
 Vue bindings for MobX, inspired by [mobx-react](https://github.com/mobxjs/mobx-react)
 
+![logo](https://github.com/mmlpxjs/mobx-vue/blob/master/logo.png?raw=true)
+
 ## Installation
+
 ```bash
 npm i mobx-vue -S
 ```
