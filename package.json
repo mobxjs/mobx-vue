@@ -22,6 +22,7 @@
   "keywords": [
     "mobx",
     "vue",
+    "bindings",
     "connector"
   ],
   "author": "Kuitos",
@@ -33,7 +34,7 @@
   "dependencies": {
     "mobx": "*",
     "vue": "^2.0.0",
-    "tslib": "^1.9.1"
+    "tslib": "^1.9.0"
   },
   "devDependencies": {
     "@types/jest": "^22.2.3",
