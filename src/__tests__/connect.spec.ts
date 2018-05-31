@@ -9,6 +9,7 @@ import { CreateElement } from 'vue/types/vue';
 import { connect } from '../connect';
 import Base from './fixtures/Base.vue';
 import ClassBase from './fixtures/ClassBase.vue';
+import Conditional from './fixtures/Conditional.vue';
 import DecoratedClassBase from './fixtures/DecoratedClassBase.vue';
 
 class Model {
@@ -204,4 +205,14 @@ test('component lifecycle should worked well', () => {
 	const wrapper = shallowMount(Component);
 	wrapper.trigger('click');
 
+});
+
+test('conditional render should be re tracked', () => {
+
+	const wrapper = shallowMount(Conditional);
+	expect(wrapper.find('[role=age]').text()).toBe('10');
+	wrapper.find('[role=toggle]').trigger('click');
+	expect(wrapper.find('[role=count]').text()).toBe('0');
+	wrapper.find('[role=increase]').trigger('click');
+	expect(wrapper.find('[role=count]').text()).toBe('1');
 });
