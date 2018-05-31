@@ -11,6 +11,21 @@ import Base from './fixtures/Base.vue';
 import ClassBase from './fixtures/ClassBase.vue';
 import DecoratedClassBase from './fixtures/DecoratedClassBase.vue';
 
+class Model {
+	@observable
+	age = 10;
+
+	@computed
+	get computedAge() {
+		return this.age + 1;
+	}
+
+	@action
+	setAge() {
+		this.age++;
+	}
+}
+
 test('connect with a object literal component', () => {
 
 	const model = observable({
@@ -82,22 +97,7 @@ test('connect with a class component', () => {
 	wrapper.destroy();
 });
 
-test('connect with a class component and observable model constructed with class', () => {
-
-	class Model {
-		@observable
-		age = 10;
-
-		@computed
-		get computedAge() {
-			return this.age + 1;
-		}
-
-		@action
-		setAge() {
-			this.age++;
-		}
-	}
+test('use connect function with class component and observable model constructed by class', () => {
 
 	const model = new Model();
 
@@ -118,7 +118,7 @@ test('connect with a class component and observable model constructed with class
 
 });
 
-describe('use connect decorator with a class component and observable model class', () => {
+describe('use connect decorator with class component and observable model constructed by class', () => {
 
 	const wrapper = shallowMount(DecoratedClassBase);
 	test('component should be reactive', () => {
@@ -148,5 +148,60 @@ describe('use connect decorator with a class component and observable model clas
 		wrapper.destroy();
 		expect(spy.mock.calls.length).toBe(1);
 	});
+
+});
+
+test('compatible with traditional component definition', () => {
+
+	const model = new Model();
+	const Component = connect(model)({
+		name: 'HelloWorld',
+		data() {
+			return { name: 'kuitos' };
+		},
+		methods: {
+			setName(this: any) {
+				this.name = 'lk';
+			},
+		},
+		render(this: any, h: CreateElement) {
+			return h('button', {
+				on: { click: this.setAge, focus: this.setName }, domProps: { textContent: `${this.age} ${this.name}` },
+			});
+		},
+	});
+	const wrapper = shallowMount(Component);
+	wrapper.trigger('click');
+	expect(wrapper.find('button').text()).toBe('11 kuitos');
+	wrapper.trigger('focus');
+	expect(wrapper.find('button').text()).toBe('11 lk');
+});
+
+test('component lifecycle should worked well', () => {
+
+	const model = new Model();
+	const Component = connect(model)({
+		name: 'HelloWorld',
+		beforeCreate(this: any) {
+			expect(this.age).toBeUndefined();
+		},
+		created(this: any) {
+			expect(this.age).toBe(10);
+		},
+		beforeUpdate(this: any) {
+			expect(this.age).toBe(11);
+		},
+		updated(this: any) {
+			expect(this.age).toBe(11);
+		},
+		render(this: any, h: CreateElement) {
+			return h('button', {
+				on: { click: this.setAge }, domProps: { textContent: this.age },
+			});
+		},
+	});
+
+	const wrapper = shallowMount(Component);
+	wrapper.trigger('click');
 
 });

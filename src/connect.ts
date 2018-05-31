@@ -5,14 +5,16 @@
  */
 import { Reaction } from 'mobx';
 import Vue, { ComponentOptions, PropOptions } from 'vue';
+import { DefaultData } from 'vue/types/options';
 import collectProperties from './collectProperties';
 import { VueClass } from './declarations';
 
+// @formatter:off
 // tslint:disable-next-line
-function noop() {
-}
+const noop = () => {};
+// @formatter:on
 
-function addBindings(model: any, vm: Vue) {
+const linkMobx = (model: any, vm: Vue, data?: DefaultData<Vue>) => {
 
 	collectProperties(model).forEach(key => {
 
@@ -25,14 +27,15 @@ function addBindings(model: any, vm: Vue) {
 		});
 	});
 
-	return {};
-}
+	return typeof data === 'function' ? data.call(vm) : (data || {});
+};
 
 const connect = (model: any) => (Component: VueClass<Vue> | ComponentOptions<Vue>): VueClass<Vue> => {
 
 	const name = (Component as any).name || (Component as any)._componentTag || (Component.constructor && Component.constructor.name) || '<component>';
 
-	const options = { ...(typeof Component === 'object' ? Component : {}), name, data: (vm: Vue) => addBindings(model, vm) };
+	const setup = typeof Component === 'object' ? Component : {};
+	const options = { ...setup, name, data: (vm: Vue) => linkMobx(model, vm, setup.data) };
 	const Super = typeof Component === 'function' && Component.prototype instanceof Vue ? Component : Vue;
 	const ExtendedComponent = Super.extend(options);
 
@@ -64,7 +67,7 @@ const connect = (model: any) => (Component: VueClass<Vue> | ComponentOptions<Vue
 		return reactiveRender();
 	};
 
-	ExtendedComponent.prototype.$destroy = function (this: any, ...args: any[]) {
+	ExtendedComponent.prototype.$destroy = function (this: Vue, ...args: any[]) {
 		dispose();
 		$destroy.apply(this, args);
 	};
