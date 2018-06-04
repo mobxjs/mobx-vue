@@ -38,8 +38,8 @@ We highly recommend using the bindings with [vue-class-component](https://github
 ```ts
 import { action, computed, observable } from "mobx";
 export default class ViewModel {
-    @observable
-    age = 10;
+    @observable age = 10;
+    @observable users = [];
 
     @computed
     get computedAge() {
@@ -50,6 +50,10 @@ export default class ViewModel {
     setAge() {
         this.age++;
     }
+    
+    @action async fetchUsers() {
+    	this.users = await http.get('/users')
+    }
 }
 ```
 
@@ -58,6 +62,7 @@ export default class ViewModel {
     <section>
         <p v-text="age"></p>
         <p v-text="computedAge"></p>
+        <p v-for="user in users" :key="user.name">{{user.name}}</p>
         <button @click="setAge"></button>
     </section>
 </template>
@@ -71,8 +76,8 @@ export default class ViewModel {
     @Connect(new ViewModel())
     @Component()
     export default class App extends Vue {
-        created() { 
-            console.log(this.age);
+        mounted() { 
+            this.fetchUsers();
         }
     }
 </script>
@@ -88,8 +93,12 @@ Or used with the traditional way:
     import ViewModel from './ViewModel';
 
     export default connect(new ViewModel())({ 
-        created() { console.log(this.age) 
-    }})
+        methods: {
+            mounted() { 
+                this.fetchUsers() 
+            } 
+        }
+    })
 </script>
 ```
 
