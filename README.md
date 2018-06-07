@@ -29,11 +29,12 @@ Unlike the other vue-rx-inspired libraries which based on the plugin mechanism o
 
 And, the most important is that you can build a view-library-free application with mobx which manages your app state, if you wanna migrate to another view library(React/Angular) someday, rewrite the template and switch to the relevant mobx connector([mobx-react](https://github.com/mobxjs/mobx-react),[mobx-angular](https://github.com/mobxjs/mobx-angular),[mobx-angularjs](https://github.com/mobxjs/mobx-angularjs)) is all you have to do.
 
-Related reading: 
+### Articles: 
 
 * [Build A View-Framework-Free Data Layer Based on MobX — Integration With Vue](https://medium.com/@kuitos/build-a-view-framework-free-data-layer-based-on-mobx-integration-with-vue-1-8b524b86c7b8)
 
 * [Why MobX + movue, instead of Vuex?](https://github.com/nighca/movue/issues/8)
+* [基于 MobX 构建视图框架无关的数据层-与 Vue 的结合(1)](https://zhuanlan.zhihu.com/p/37736470)
 
 ## Usage
 
@@ -45,13 +46,11 @@ export default class ViewModel {
     @observable age = 10;
     @observable users = [];
 
-    @computed
-    get computedAge() {
+    @computed get computedAge() {
         return this.age + 1;
     }
 
-    @action
-    setAge() {
+    @action setAge() {
         this.age++;
     }
     
