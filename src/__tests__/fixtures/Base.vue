@@ -1,12 +1,25 @@
 <template>
 	<section>
-		<p v-text="age"></p>
-		<button @click="setAge"></button>
+		<p v-text="model.age"></p>
+		<button @click="model.setAge"></button>
 	</section>
 </template>
 
 <script lang="ts">
+
+	import { observable } from "mobx";
+
 	export default {
-		name: 'Base'
-	}
+		name: "Base",
+		data() {
+			const model = observable.object({
+				age: 10,
+				setAge() {
+					model.age++;
+				},
+			});
+
+			return { model };
+		},
+	};
 </script>

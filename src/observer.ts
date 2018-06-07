@@ -5,8 +5,7 @@
  */
 import { Reaction } from 'mobx';
 import Vue, { ComponentOptions, PropOptions } from 'vue';
-import { DefaultData } from 'vue/types/options';
-import collectProperties from './collectProperties';
+import collectData from './collectData';
 import { VueClass } from './declarations';
 
 // @formatter:off
@@ -14,28 +13,12 @@ import { VueClass } from './declarations';
 const noop = () => {};
 // @formatter:on
 
-const linkMobx = (model: any, vm: Vue, data?: DefaultData<Vue>) => {
-
-	collectProperties(model).forEach(key => {
-
-		Object.defineProperty(vm, key, {
-			configurable: true,
-			get() {
-				const value = model[key];
-				return typeof value === 'function' ? value.bind(model) : value;
-			},
-		});
-	});
-
-	return typeof data === 'function' ? data.call(vm) : (data || {});
-};
-
-const connect = (model: any) => (Component: VueClass<Vue> | ComponentOptions<Vue>): VueClass<Vue> => {
+const observer = (Component: VueClass<Vue> | ComponentOptions<Vue>): VueClass<Vue> => {
 
 	const name = (Component as any).name || (Component as any)._componentTag || (Component.constructor && Component.constructor.name) || '<component>';
 
-	const setup = typeof Component === 'object' ? Component : {};
-	const options = { ...setup, name, data: (vm: Vue) => linkMobx(model, vm, setup.data) };
+	const setup = typeof Component === 'object' ? Component : (Component as any).options as ComponentOptions<Vue>;
+	const options = { ...setup, name, data: (vm: Vue) => collectData(vm, setup.data) };
 	const Super = typeof Component === 'function' && Component.prototype instanceof Vue ? Component : Vue;
 	const ExtendedComponent = Super.extend(options);
 
@@ -72,11 +55,18 @@ const connect = (model: any) => (Component: VueClass<Vue> | ComponentOptions<Vue
 		$destroy.apply(this, args);
 	};
 
+	Object.defineProperty(ExtendedComponent, 'name', {
+		writable: false,
+		value: name,
+		enumerable: false,
+		configurable: false,
+	});
+
 	return ExtendedComponent;
 };
 
 export {
 	PropOptions,
-	connect,
-	connect as Connect,
+	observer,
+	observer as Observer,
 };

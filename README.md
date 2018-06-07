@@ -25,7 +25,7 @@ yarn add mobx-vue
 
 MobX is an unopinionated, scalable state management, which can make our programming more intuitive.
 
-Unlike the other vue-rx-inspired libraries which based on the plugin mechanism of vue, mobx-vue will be the simplest you ever meet. What you just need is to connect your state to vue component without any component definition changed like [react-redux](https://github.com/reactjs/react-redux) does,  then your component will react to your state changes automatically.
+Unlike the other vue-rx-inspired libraries which based on the plugin mechanism of vue, mobx-vue will be the simplest you ever meet. What you all need is to bind your state in component definition and observe it just like [mobx-react](https://github.com/mobxjs/mobx-react) does,  then your component will react to your state changes automatically which managed by mobx.
 
 And, the most important is that you can build a view-library-free application with mobx which manages your app state, if you wanna migrate to another view library(React/Angular) someday, rewrite the template and switch to the relevant mobx connector([mobx-react](https://github.com/mobxjs/mobx-react),[mobx-angular](https://github.com/mobxjs/mobx-angular),[mobx-angularjs](https://github.com/mobxjs/mobx-angularjs)) is all you have to do.
 
@@ -50,11 +50,11 @@ export default class ViewModel {
         return this.age + 1;
     }
 
-    @action setAge() {
+    @action.bound setAge() {
         this.age++;
     }
     
-    @action async fetchUsers() {
+    @action.bound async fetchUsers() {
     	this.users = await http.get('/users')
     }
 }
@@ -63,24 +63,25 @@ export default class ViewModel {
 ```vue
 <template>
     <section>
-        <p v-text="age"></p>
-        <p v-text="computedAge"></p>
-        <p v-for="user in users" :key="user.name">{{user.name}}</p>
-        <button @click="setAge"></button>
+        <p v-text="state.age"></p>
+        <p v-text="state.computedAge"></p>
+        <p v-for="user in state.users" :key="user.name">{{user.name}}</p>
+        <button @click="state.setAge"></button>
     </section>
 </template>
 
 <script lang="ts">
-    import { Connect } from "mobx-vue";
     import Vue from "vue";
     import Component from "vue-class-component";
+    import { Observer } from "mobx-vue";
     import ViewModel from './ViewModel';
 
-    @Connect(new ViewModel())
+    @Observer
     @Component()
     export default class App extends Vue {
+        state = new ViewModel()
         mounted() { 
-            this.fetchUsers();
+            this.state.fetchUsers();
         }
     }
 </script>
@@ -90,22 +91,24 @@ Or used with the traditional way:
 
 ```vue
 <script lang="ts">
-    import { connect } from "mobx-vue";
     import Vue from "vue";
-    import Component from "vue-class-component";
+    import { observer } from "mobx-vue";
     import ViewModel from './ViewModel';
 
-    export default connect(new ViewModel())({ 
+    export default observer({
+        data() {
+            return { state: new ViewModel() }
+        },
         methods: {
-            mounted() { 
-                this.fetchUsers() 
+            mounted() {
+                this.state.fetchUsers() 
             } 
         }
     })
 </script>
 ```
 
-What we need is just connect the Store/ViewModel with your vue component. No more reactive data definations in component.
+All you need is to bind your state to component and observe it. No more reactive data definations in component.
 
 
 

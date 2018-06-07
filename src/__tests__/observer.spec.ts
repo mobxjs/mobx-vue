@@ -6,11 +6,12 @@
 import { shallowMount } from '@vue/test-utils';
 import { action, computed, observable } from 'mobx';
 import { CreateElement } from 'vue/types/vue';
-import { connect } from '../connect';
+import { observer } from '../observer';
 import Base from './fixtures/Base.vue';
 import ClassBase from './fixtures/ClassBase.vue';
 import Conditional from './fixtures/Conditional.vue';
 import DecoratedClassBase from './fixtures/DecoratedClassBase.vue';
+import ModelClassBase from './fixtures/ModelClassBase.vue';
 
 class Model {
 	@observable
@@ -21,26 +22,31 @@ class Model {
 		return this.age + 1;
 	}
 
-	@action
+	@action.bound
 	setAge() {
 		this.age++;
 	}
 }
 
-test('connect with a object literal component', () => {
+test('observer with a object literal component', () => {
 
 	const model = observable({
 		age: 10,
 		setAge() {
-			this.age++;
+			model.age++;
 		},
 	});
 
-	const Component = connect(model)({
+	const Component = observer({
+		data() {
+			return {
+				model,
+			};
+		},
 		name: 'HelloWorld',
 		render(this: any, h: CreateElement) {
 			return h('button', {
-				on: { click: this.setAge }, domProps: { textContent: this.age },
+				on: { click: this.model.setAge }, domProps: { textContent: this.model.age },
 			});
 		},
 	});
@@ -55,16 +61,9 @@ test('connect with a object literal component', () => {
 	wrapper.destroy();
 });
 
-test('connect with a base component', () => {
+test('observer with a base component', () => {
 
-	const model = observable({
-		age: 10,
-		setAge() {
-			this.age++;
-		},
-	});
-
-	const Component = connect(model)(Base);
+	const Component = observer(Base);
 
 	const wrapper = shallowMount(Component);
 	expect(wrapper.name()).toBe(Base.name);
@@ -77,16 +76,9 @@ test('connect with a base component', () => {
 
 });
 
-test('connect with a class component', () => {
+test('observer with a class component', () => {
 
-	const model = observable({
-		age: 10,
-		setAge() {
-			this.age++;
-		},
-	});
-
-	const Component = connect(model)(ClassBase);
+	const Component = observer(ClassBase);
 
 	const wrapper = shallowMount(Component);
 	expect(wrapper.name()).toBe(ClassBase.name);
@@ -97,17 +89,13 @@ test('connect with a class component', () => {
 
 	wrapper.destroy();
 });
+//
+test('use observer function with class component and observable model constructed by class', () => {
 
-test('use connect function with class component and observable model constructed by class', () => {
-
-	const model = new Model();
-
-	// clear vue component constructor cache
-	(ClassBase as any).options._Ctor = {};
-	const Component = connect(model)(ClassBase);
+	const Component = observer(ModelClassBase);
 
 	const wrapper = shallowMount(Component);
-	expect(wrapper.name()).toBe(ClassBase.name);
+	expect(wrapper.name()).toBe(ModelClassBase.name);
 	expect(wrapper.find('[role="age"]').text()).toBe('10');
 	expect(wrapper.find('[role="computed-age"]').text()).toBe('11');
 
@@ -116,15 +104,14 @@ test('use connect function with class component and observable model constructed
 	expect(wrapper.find('[role="computed-age"]').text()).toBe('12');
 
 	wrapper.destroy();
-
 });
-
-describe('use connect decorator with class component and observable model constructed by class', () => {
+//
+describe('use observer decorator with class component and observable model constructed by class', () => {
 
 	const wrapper = shallowMount(DecoratedClassBase);
 	test('component should be reactive', () => {
 
-		expect(wrapper.name()).toBe((DecoratedClassBase as any).options.name);
+		expect(wrapper.name()).toBe((DecoratedClassBase as any).name);
 		expect(wrapper.find('[role="age"]').text()).toBe('10');
 		expect(wrapper.find('[role="computed-age"]').text()).toBe('11');
 
@@ -151,14 +138,13 @@ describe('use connect decorator with class component and observable model constr
 	});
 
 });
-
+//
 test('compatible with traditional component definition', () => {
 
-	const model = new Model();
-	const Component = connect(model)({
+	const Component = observer({
 		name: 'HelloWorld',
 		data() {
-			return { name: 'kuitos' };
+			return { name: 'kuitos', model: new Model() };
 		},
 		methods: {
 			setName(this: any) {
@@ -167,7 +153,7 @@ test('compatible with traditional component definition', () => {
 		},
 		render(this: any, h: CreateElement) {
 			return h('button', {
-				on: { click: this.setAge, focus: this.setName }, domProps: { textContent: `${this.age} ${this.name}` },
+				on: { click: this.model.setAge, focus: this.setName }, domProps: { textContent: `${this.model.age} ${this.name}` },
 			});
 		},
 	});
@@ -180,24 +166,26 @@ test('compatible with traditional component definition', () => {
 
 test('component lifecycle should worked well', () => {
 
-	const model = new Model();
-	const Component = connect(model)({
+	const Component = observer({
 		name: 'HelloWorld',
+		data() {
+			return { model: new Model() };
+		},
 		beforeCreate(this: any) {
-			expect(this.age).toBeUndefined();
+			expect(this.model).toBeUndefined();
 		},
 		created(this: any) {
-			expect(this.age).toBe(10);
+			expect(this.model.age).toBe(10);
 		},
 		beforeUpdate(this: any) {
-			expect(this.age).toBe(11);
+			expect(this.model.age).toBe(11);
 		},
 		updated(this: any) {
-			expect(this.age).toBe(11);
+			expect(this.model.age).toBe(11);
 		},
 		render(this: any, h: CreateElement) {
 			return h('button', {
-				on: { click: this.setAge }, domProps: { textContent: this.age },
+				on: { click: this.model.setAge }, domProps: { textContent: this.model.age },
 			});
 		},
 	});

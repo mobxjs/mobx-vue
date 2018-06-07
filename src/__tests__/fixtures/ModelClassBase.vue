@@ -11,7 +11,6 @@
 	import { action, computed, observable } from "mobx";
 	import Vue from "vue";
 	import Component from "vue-class-component";
-	import { Observer } from "../../observer";
 
 	class Model {
 		@observable
@@ -28,9 +27,8 @@
 		}
 	}
 
-	@Observer
 	@Component()
-	export default class DecoratedClassBase extends Vue {
+	export default class ModelClassBase extends Vue {
 		model = new Model();
 	}
 </script>

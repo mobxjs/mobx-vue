@@ -1,10 +1,10 @@
 <template>
 	<section>
-		<p role="age" v-text="age"></p>
-		<button role="increase" @click="increase"></button>
-		<button role="toggle" @click="toggle"></button>
-		<div v-if="show">
-			<p role="count" v-text="count"></p>
+		<p role="age" v-text="model.age"></p>
+		<button role="increase" @click="model.increase"></button>
+		<button role="toggle" @click="model.toggle"></button>
+		<div v-if="model.show">
+			<p role="count" v-text="model.count"></p>
 		</div>
 	</section>
 </template>
@@ -14,7 +14,7 @@
 	import { action, observable } from "mobx";
 	import Vue from "vue";
 	import Component from "vue-class-component";
-	import { Connect } from "../../connect";
+	import { Observer } from "../../observer";
 
 	class Model {
 		@observable
@@ -26,25 +26,26 @@
 		@observable
 		count = 0;
 
-		@action
+		@action.bound
 		setAge() {
 			this.age++;
 		}
 
-		@action
+		@action.bound
 		toggle() {
 			this.show = !this.show;
 		}
 
-		@action
+		@action.bound
 		increase() {
 			this.count++;
 		}
 
 	}
 
-	@Connect(new Model())
+	@Observer
 	@Component()
 	export default class Conditional extends Vue {
+		model = new Model();
 	}
 </script>
