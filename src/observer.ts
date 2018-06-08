@@ -17,7 +17,7 @@ const observer = (Component: VueClass<Vue> | ComponentOptions<Vue>): VueClass<Vu
 
 	const name = (Component as any).name || (Component as any)._componentTag || (Component.constructor && Component.constructor.name) || '<component>';
 
-	const setup = typeof Component === 'object' ? Component : (Component as any).options as ComponentOptions<Vue>;
+	const setup = typeof Component === 'object' ? Component : {};
 	const options = { ...setup, name, data: (vm: Vue) => collectData(vm, setup.data) };
 	const Super = typeof Component === 'function' && Component.prototype instanceof Vue ? Component : Vue;
 	const ExtendedComponent = Super.extend(options);
