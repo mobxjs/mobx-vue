@@ -17,9 +17,15 @@ const observer = (Component: VueClass<Vue> | ComponentOptions<Vue>): VueClass<Vu
 
 	const name = (Component as any).name || (Component as any)._componentTag || (Component.constructor && Component.constructor.name) || '<component>';
 
-	const setup = typeof Component === 'object' ? Component : {};
-	const options = { ...setup, name, data: (vm: Vue) => collectData(vm, setup.data) };
-	const Super = typeof Component === 'function' && Component.prototype instanceof Vue ? Component : Vue;
+	// while parameter was component options, we could use it directly
+	// otherwise we only use its data definition
+	// we couldn't merge the options when Component was a VueClass, that will merge the lifecycle twice after we called Component.extend
+	const options = {
+		...typeof Component === 'object' ? Component : {},
+		name,
+		data: (vm: Vue) => collectData(vm, (typeof Component === 'object' ? Component : (Component as any).options).data),
+	};
+	const Super = (typeof Component === 'function' && Component.prototype instanceof Vue) ? Component : Vue;
 	const ExtendedComponent = Super.extend(options);
 
 	let dispose = noop;
@@ -63,7 +69,7 @@ const observer = (Component: VueClass<Vue> | ComponentOptions<Vue>): VueClass<Vu
 	});
 
 	return ExtendedComponent;
-};
+}
 
 export {
 	PropOptions,
