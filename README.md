@@ -21,6 +21,10 @@ or
 yarn add mobx-vue
 ```
 
+## Requirement
+* Vue >= 2.0.0
+* MobX >= 4.0.0, compatible with MobX 5!
+
 ## Why mobx-vue 
 
 MobX is an unopinionated, scalable state management, which can make our programming more intuitive.

@@ -212,6 +212,8 @@ test('mobx state should not be collect by vue', () => {
 		@observable name = '';
 	}
 
+	const model1 = observable({ xx: 10 });
+
 	class Model {
 	}
 
@@ -221,6 +223,7 @@ test('mobx state should not be collect by vue', () => {
 
 		model = new Model();
 		om = new ObservableModel();
+		om1 = model1;
 		age = 10;
 
 		render(h: CreateElement) {
@@ -231,6 +234,7 @@ test('mobx state should not be collect by vue', () => {
 	const vm = shallowMount(App).vm;
 
 	expect(vm.$data.hasOwnProperty('om')).toBeFalsy();
+	expect(vm.$data.hasOwnProperty('om1')).toBeFalsy();
 	expect(vm.$data.hasOwnProperty('age')).toBeTruthy();
 	expect(vm.$data.hasOwnProperty('model')).toBeTruthy();
 });
