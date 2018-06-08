@@ -1,7 +1,7 @@
 {
   "name": "mobx-vue",
   "version": "2.0.2",
-  "description": "mobx connector to vue",
+  "description": "Vue bindings for MobX",
   "main": "./lib/index.js",
   "module": "./esm/index.js",
   "types": "./esm/index.d.ts",
@@ -23,6 +23,7 @@
   "keywords": [
     "mobx",
     "vue",
+    "mobx-vue",
     "bindings",
     "connector"
   ],
