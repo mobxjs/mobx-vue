@@ -5,8 +5,9 @@
  */
 import { shallowMount } from '@vue/test-utils';
 import { action, computed, observable } from 'mobx';
-import { CreateElement } from 'vue/types/vue';
-import { observer } from '../observer';
+import Vue, { CreateElement } from 'vue';
+import Component from 'vue-class-component';
+import { Observer, observer } from '../observer';
 import Base from './fixtures/Base.vue';
 import ClassBase from './fixtures/ClassBase.vue';
 import Conditional from './fixtures/Conditional.vue';
@@ -203,4 +204,33 @@ test('conditional render should be re tracked', () => {
 	expect(wrapper.find('[role=count]').text()).toBe('0');
 	wrapper.find('[role=increase]').trigger('click');
 	expect(wrapper.find('[role=count]').text()).toBe('1');
+});
+
+test('mobx state should not be collect by vue', () => {
+
+	class ObservableModel {
+		@observable name = '';
+	}
+
+	class Model {
+	}
+
+	@Observer
+	@Component
+	class App extends Vue {
+
+		model = new Model();
+		om = new ObservableModel();
+		age = 10;
+
+		render(h: CreateElement) {
+			return h('div');
+		}
+	}
+
+	const vm = shallowMount(App).vm;
+
+	expect(vm.$data.hasOwnProperty('om')).toBeFalsy();
+	expect(vm.$data.hasOwnProperty('age')).toBeTruthy();
+	expect(vm.$data.hasOwnProperty('model')).toBeTruthy();
 });
