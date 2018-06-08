@@ -18,7 +18,7 @@
 		},
 	});
 
-	@Component()
+	@Component
 	export default class ClassBase extends Vue {
 		model = model;
 	}

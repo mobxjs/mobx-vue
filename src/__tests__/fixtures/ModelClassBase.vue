@@ -27,7 +27,7 @@
 		}
 	}
 
-	@Component()
+	@Component
 	export default class ModelClassBase extends Vue {
 		model = new Model();
 	}

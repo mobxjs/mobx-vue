@@ -29,7 +29,7 @@
 	}
 
 	@Observer
-	@Component()
+	@Component
 	export default class DecoratedClassBase extends Vue {
 		model = new Model();
 	}

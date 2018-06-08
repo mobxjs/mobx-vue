@@ -44,7 +44,7 @@
 	}
 
 	@Observer
-	@Component()
+	@Component
 	export default class Conditional extends Vue {
 		model = new Model();
 	}

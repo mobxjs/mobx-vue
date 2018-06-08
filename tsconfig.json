@@ -20,7 +20,6 @@
 	// "outFile": "./",                       /* Concatenate and emit output to single file. */
 	"outDir": "dist/esm",
 	/* Redirect output structure to the directory. */
-	"rootDir": "src",
 	/* Specify the root directory of input files. Use to control the output directory structure with --outDir. */
 	// "removeComments": true,                /* Do not emit comments to output. */
 	// "noEmit": true,                        /* Do not emit outputs. */
@@ -82,5 +81,8 @@
 	"experimentalDecorators": true
 	/* Enables experimental support for ES7 framework. */
 	// "emitDecoratorMetadata": true,         /* Enables experimental support for emitting type metadata for framework. */
-  }
+  },
+  "include": [
+	"./src/**/*"
+  ]
 }
