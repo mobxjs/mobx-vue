@@ -36,6 +36,7 @@
   "dependencies": {
     "mobx": "*",
     "vue": "^2.0.0",
+    "vue-class-component": ">=4.3.0",
     "tslib": "^1.9.0"
   },
   "devDependencies": {
@@ -47,7 +48,6 @@
     "tslint": "^5.10.0",
     "tslint-eslint-rules": "^5.3.1",
     "typescript": "^2.8.3",
-    "vue-class-component": "^6.2.0",
     "vue-jest": "^2.6.0",
     "vue-template-compiler": "^2.5.16"
   },

@@ -4,16 +4,16 @@
  * @since 2018-05-22 16:39
  */
 import { Reaction } from 'mobx';
-import Vue, { ComponentOptions, PropOptions } from 'vue';
+import Vue, { ComponentOptions } from 'vue';
+import { VueClass } from 'vue-class-component/lib/declarations';
 import collectData from './collectData';
-import { VueClass } from './declarations';
 
 // @formatter:off
 // tslint:disable-next-line
 const noop = () => {};
 // @formatter:on
-
-const observer = (Component: VueClass<Vue> | ComponentOptions<Vue>): VueClass<Vue> => {
+function observer<VC extends VueClass<Vue>>(Component: VC | ComponentOptions<Vue>): VC;
+function observer<VC extends VueClass<Vue>>(Component: VC | ComponentOptions<Vue>) {
 
 	const name = (Component as any).name || (Component as any)._componentTag || (Component.constructor && Component.constructor.name) || '<component>';
 
@@ -72,7 +72,6 @@ const observer = (Component: VueClass<Vue> | ComponentOptions<Vue>): VueClass<Vu
 }
 
 export {
-	PropOptions,
 	observer,
 	observer as Observer,
 };
