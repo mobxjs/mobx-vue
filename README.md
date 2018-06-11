@@ -31,7 +31,7 @@ MobX is an unopinionated, scalable state management, which can make our programm
 
 Unlike the other vue-rx-inspired libraries which based on the plugin mechanism of vue, mobx-vue will be the simplest you ever meet. What you all need is to bind your state in component definition and observe it just like [mobx-react](https://github.com/mobxjs/mobx-react) does,  then your component will react to your state changes automatically which managed by mobx.
 
-And, the most important is that you can build a view-library-free application with mobx which manages your app state, if you wanna migrate to another view library(React/Angular) someday, rewrite the template and switch to the relevant mobx connector([mobx-react](https://github.com/mobxjs/mobx-react),[mobx-angular](https://github.com/mobxjs/mobx-angular),[mobx-angularjs](https://github.com/mobxjs/mobx-angularjs)) is all you have to do.
+And, the most important is that you can build a view-library-free application, if you wanna migrate to another view library(React/Angular) someday, rewrite the template and switch to the relevant mobx bindings([mobx-react](https://github.com/mobxjs/mobx-react),[mobx-angular](https://github.com/mobxjs/mobx-angular),[mobx-angularjs](https://github.com/mobxjs/mobx-angularjs)) is all you have to do.
 
 ### Articles: 
 
