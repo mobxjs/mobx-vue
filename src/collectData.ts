@@ -8,15 +8,21 @@ import * as mobx from 'mobx';
 import Vue from 'vue';
 import { DefaultData } from 'vue/types/options';
 
+/**
+ * check if is a mobx observable
+ * compatible with mobx 5
+ */
+function isMobxObservable(value: any) {
+	return !!(value.$mobx || value.__mobxDecorators || value[mobx.$mobx]);
+}
+
 export default function collectData(vm: Vue, data?: DefaultData<Vue>) {
 
-	const dataDefinition = typeof data === 'function' ? data.call(vm) : (data || {});
+	const dataDefinition = typeof data === 'function' ? data.call(vm, vm) : (data || {});
 	const filteredData = Object.keys(dataDefinition).reduce((result: any, field) => {
 
 		const value = dataDefinition[field];
-		// check if is a mobx observable
-		// compatible with mobx5
-		if (value.$mobx || value.__mobxDecorators || value[mobx.$mobx]) {
+		if (isMobxObservable(value)) {
 			Object.defineProperty(vm, field, {
 				configurable: true,
 				get() {

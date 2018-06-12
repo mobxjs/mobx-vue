@@ -212,6 +212,15 @@ test('mobx state should not be collect by vue', () => {
 		@observable name = '';
 	}
 
+	const prop = (value: string): any => () => {
+		return {
+			configurable: true,
+			get() {
+				return value;
+			},
+		};
+	};
+
 	const model1 = observable({ xx: 10 });
 
 	class Model {
@@ -220,6 +229,9 @@ test('mobx state should not be collect by vue', () => {
 	@Observer
 	@Component
 	class App extends Vue {
+
+		@prop('kuitos')
+		name!: string;
 
 		model = new Model();
 		om = new ObservableModel();
@@ -237,4 +249,7 @@ test('mobx state should not be collect by vue', () => {
 	expect(vm.$data.hasOwnProperty('om1')).toBeFalsy();
 	expect(vm.$data.hasOwnProperty('age')).toBeTruthy();
 	expect(vm.$data.hasOwnProperty('model')).toBeTruthy();
+
+	expect(vm.name).toBe('kuitos');
+	expect(vm.$data.hasOwnProperty('name')).toBeFalsy();
 });

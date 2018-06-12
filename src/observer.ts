@@ -17,14 +17,19 @@ function observer<VC extends VueClass<Vue>>(Component: VC | ComponentOptions<Vue
 
 	const name = (Component as any).name || (Component as any)._componentTag || (Component.constructor && Component.constructor.name) || '<component>';
 
+	const originalOptions = typeof Component === 'object' ? Component : (Component as any).options;
 	// while parameter was component options, we could use it directly
 	// otherwise we only use its data definition
 	// we couldn't merge the options when Component was a VueClass, that will merge the lifecycle twice after we called Component.extend
+	const dataDefinition = originalOptions.data;
 	const options = {
 		...typeof Component === 'object' ? Component : {},
 		name,
-		data: (vm: Vue) => collectData(vm, (typeof Component === 'object' ? Component : (Component as any).options).data),
+		data: (vm: Vue) => collectData(vm, dataDefinition),
 	};
+	// remove the parent data definition to avoid reduplicate invocation
+	originalOptions.data = {};
+
 	const Super = (typeof Component === 'function' && Component.prototype instanceof Vue) ? Component : Vue;
 	const ExtendedComponent = Super.extend(options);
 
