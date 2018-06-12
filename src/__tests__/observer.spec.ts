@@ -204,6 +204,11 @@ test('conditional render should be re tracked', () => {
 	expect(wrapper.find('[role=count]').text()).toBe('0');
 	wrapper.find('[role=increase]').trigger('click');
 	expect(wrapper.find('[role=count]').text()).toBe('1');
+
+	wrapper.find('[role=native-toggle]').trigger('click');
+	expect(wrapper.find('[role=native-count]').text()).toBe('0');
+	wrapper.find('[role=native-increase]').trigger('click');
+	expect(wrapper.find('[role=native-count]').text()).toBe('1');
 });
 
 test('mobx state should not be collect by vue', () => {

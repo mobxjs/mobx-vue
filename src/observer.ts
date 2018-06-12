@@ -41,13 +41,17 @@ function observer<VC extends VueClass<Vue>>(Component: VC | ComponentOptions<Vue
 
 		let mounted = false;
 
+		let originalRender: any;
 		const reactiveRender = () => {
 			reaction.track(() => {
 				if (!mounted) {
 					$mount.apply(this, args);
 					mounted = true;
+					// rewrite the render method to avoid losing track when component updated by vue watcher
+					originalRender = this._watcher.getter;
+					this._watcher.getter = reactiveRender;
 				} else {
-					this._watcher.getter.call(this, this);
+					originalRender.call(this, this);
 				}
 			});
 

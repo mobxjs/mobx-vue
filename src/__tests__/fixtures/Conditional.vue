@@ -6,6 +6,11 @@
 		<div v-if="model.show">
 			<p role="count" v-text="model.count"></p>
 		</div>
+		<button role="native-toggle" @click="nativeToggle"></button>
+		<button role="native-increase" @click="model.nativeIncrease"></button>
+		<div v-if="show">
+			<p role="native-count" v-text="model.nativeCount"></p>
+		</div>
 	</section>
 </template>
 
@@ -26,6 +31,9 @@
 		@observable
 		count = 0;
 
+		@observable
+		nativeCount = 0;
+
 		@action.bound
 		setAge() {
 			this.age++;
@@ -41,11 +49,22 @@
 			this.count++;
 		}
 
+		@action.bound
+		nativeIncrease() {
+			this.nativeCount++;
+		}
+
 	}
 
 	@Observer
 	@Component
 	export default class Conditional extends Vue {
 		model = new Model();
+
+		show = false;
+
+		nativeToggle() {
+			this.show = !this.show;
+		}
 	}
 </script>
