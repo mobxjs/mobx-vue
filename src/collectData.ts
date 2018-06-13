@@ -13,7 +13,7 @@ import { DefaultData } from 'vue/types/options';
  * compatible with mobx 5
  */
 function isMobxObservable(value: any) {
-	return !!(value.$mobx || value.__mobxDecorators || value[mobx.$mobx]);
+	return !!(value && (value.$mobx || value.__mobxDecorators || value[mobx.$mobx]));
 }
 
 export default function collectData(vm: Vue, data?: DefaultData<Vue>) {
