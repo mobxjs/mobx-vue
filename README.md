@@ -81,7 +81,7 @@ export default class ViewModel {
     import ViewModel from './ViewModel';
 
     @Observer
-    @Component()
+    @Component
     export default class App extends Vue {
         state = new ViewModel()
         mounted() { 
