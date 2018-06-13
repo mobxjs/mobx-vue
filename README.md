@@ -78,7 +78,7 @@ export default class ViewModel {
     import Vue from "vue";
     import Component from "vue-class-component";
     import { Observer } from "mobx-vue";
-    import ViewModel from './ViewModel';
+    import ViewModel from "./ViewModel";
 
     @Observer
     @Component
@@ -96,7 +96,7 @@ Or used with the traditional way:
 ```vue
 <script lang="ts">
     import { observer } from "mobx-vue";
-    import ViewModel from './ViewModel';
+    import ViewModel from "./ViewModel";
 
     export default observer({
         data() {
@@ -109,10 +109,8 @@ Or used with the traditional way:
 </script>
 ```
 
-All you need is to bind your state to component and observe it. No more reactive data definations in component.
-
-
+All you need is to bind your state to component and observe it. No more reactive data definitions in component.
 
 ## API
 
-* connect(viewModel)(VueComponent | options): ExtendedVueComponent
+* observer((VueComponent | options): ExtendedVueComponent
