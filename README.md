@@ -103,10 +103,8 @@ Or used with the traditional way:
         data() {
             return { state: new ViewModel() }
         },
-        methods: {
-            mounted() {
-                this.state.fetchUsers() 
-            } 
+        mounted() {
+            this.state.fetchUsers() 
         }
     })
 </script>
