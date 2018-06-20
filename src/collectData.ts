@@ -4,17 +4,9 @@
  * @since 2018-06-08 10:16
  */
 
-import * as mobx from 'mobx';
+import { isObservable } from 'mobx';
 import Vue from 'vue';
 import { DefaultData } from 'vue/types/options';
-
-/**
- * check if is a mobx observable
- * compatible with mobx 5
- */
-function isMobxObservable(value: any) {
-	return !!(value && (value.$mobx || value.__mobxDecorators || value[mobx.$mobx]));
-}
 
 export default function collectData(vm: Vue, data?: DefaultData<Vue>) {
 
@@ -22,7 +14,7 @@ export default function collectData(vm: Vue, data?: DefaultData<Vue>) {
 	const filteredData = Object.keys(dataDefinition).reduce((result: any, field) => {
 
 		const value = dataDefinition[field];
-		if (isMobxObservable(value)) {
+		if (isObservable(value)) {
 			Object.defineProperty(vm, field, {
 				configurable: true,
 				get() {
