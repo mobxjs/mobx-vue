@@ -111,6 +111,8 @@ Or used with the traditional way:
 
 All you need is to bind your state to component and observe it. No more reactive data definitions in component.
 
+*Tips: If you're tired of instantiating instance manually every time, you might wanna try the [mmlpx](https://github.com/mmlpxjs/mmlpx) library which leveraged a dependency injection system.*
+
 ## API
 
 * observer((VueComponent | options): ExtendedVueComponent
