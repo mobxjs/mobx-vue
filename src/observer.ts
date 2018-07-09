@@ -29,12 +29,12 @@ function observer<VC extends VueClass<Vue>>(Component: VC | ComponentOptions<Vue
 		data: (vm: Vue) => collectData(vm, dataDefinition),
 	};
 	// remove the parent data definition to avoid reduplicate invocation
-	originalOptions.data = {};
+	delete originalOptions.data;
 
 	const Super = (typeof Component === 'function' && Component.prototype instanceof Vue) ? Component : Vue;
 	const ExtendedComponent = Super.extend(options);
 
-	let dispose = noop;
+	let disposer = noop;
 
 	const { $mount, $destroy } = ExtendedComponent.prototype;
 
@@ -61,14 +61,14 @@ function observer<VC extends VueClass<Vue>>(Component: VC | ComponentOptions<Vue
 
 		const reaction = new Reaction(`${name}.render()`, reactiveRender);
 
-		dispose = reaction.getDisposer();
+		disposer = reaction.getDisposer();
 
 		return reactiveRender();
 	};
 
-	ExtendedComponent.prototype.$destroy = function (this: Vue, ...args: any[]) {
-		dispose();
-		$destroy.apply(this, args);
+	ExtendedComponent.prototype.$destroy = function (this: Vue) {
+		disposer();
+		$destroy.apply(this);
 	};
 
 	Object.defineProperty(ExtendedComponent, 'name', {
