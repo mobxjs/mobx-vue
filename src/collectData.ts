@@ -8,6 +8,13 @@ import { isObservable } from 'mobx';
 import Vue from 'vue';
 import { DefaultData } from 'vue/types/options';
 
+/**
+ * collect the data which defined for vue
+ * and filter the mobx data to avoid duplicated watching by vue
+ * @param {Vue} vm
+ * @param {DefaultData<Vue>} data
+ * @returns {any} filtered data for vue definition
+ */
 export default function collectData(vm: Vue, data?: DefaultData<Vue>) {
 
 	const dataDefinition = typeof data === 'function' ? data.call(vm, vm) : (data || {});

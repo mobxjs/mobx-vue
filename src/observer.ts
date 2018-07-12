@@ -5,7 +5,7 @@
  */
 import { Reaction } from 'mobx';
 import Vue, { ComponentOptions } from 'vue';
-import collectData from './collectData';
+import collectDataForVue from './collectData';
 
 export type VueClass<V> = { new(...args: any[]): V & Vue } & typeof Vue;
 
@@ -26,7 +26,7 @@ function observer<VC extends VueClass<Vue>>(Component: VC | ComponentOptions<Vue
 		// we couldn't merge the options when Component was a VueClass, that will invoke the lifecycle twice after we called Component.extend
 		...typeof Component === 'object' ? Component : {},
 		name,
-		data: (vm: Vue) => collectData(vm, dataDefinition),
+		data: (vm: Vue) => collectDataForVue(vm, dataDefinition),
 	};
 	// remove the parent data definition to avoid reduplicate invocation
 	delete originalOptions.data;
@@ -42,17 +42,18 @@ function observer<VC extends VueClass<Vue>>(Component: VC | ComponentOptions<Vue
 
 		let mounted = false;
 
-		let originalRender: any;
+		let nativeRenderOfVue: any;
 		const reactiveRender = () => {
 			reaction.track(() => {
 				if (!mounted) {
 					$mount.apply(this, args);
 					mounted = true;
-					// rewrite the render method to avoid losing track when component updated by vue watcher
-					originalRender = this._watcher.getter;
+					nativeRenderOfVue = this._watcher.getter;
+					// rewrite the native render method of vue with our reactive tracker render
+					// thus if component updated by vue watcher, we could re track and collect dependencies by mobx
 					this._watcher.getter = reactiveRender;
 				} else {
-					originalRender.call(this, this);
+					nativeRenderOfVue.call(this, this);
 				}
 			});
 
