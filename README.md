@@ -111,6 +111,44 @@ Or used with the traditional way:
 
 All you need is to bind your state to component and observe it. No more reactive data definitions in component.
 
+### Using component props
+
+Any props defined in your component will automatically be watched and set on your state if they have matching names.
+
+```vue
+<template>
+    <span>{{state.ageMessage}}</span>
+</template>
+
+<script lang="ts">
+    import Vue from "vue";
+    import Component from "vue-class-component";
+    import { Observer } from "mobx-vue";
+    
+    class ViewModel {
+        @observable age = 10;
+        @computed get ageMessage() {
+            return `My age is ${this.age}`;
+        }
+    }
+
+    @Observer
+    @Component({
+        props: { age: Number }
+    })
+    export default class App extends Vue {
+        state = new ViewModel(); // model.age will be set to the value of the prop
+    }
+</script>
+```
+
+**Result:**
+
+```html
+<!-- <App :age="100"></App> -->
+<span>My age is 100</span>
+```
+
 *Tips: If you're tired of instantiating instance manually every time, you might wanna try the [mmlpx](https://github.com/mmlpxjs/mmlpx) library which leveraged a dependency injection system.*
 
 ## API

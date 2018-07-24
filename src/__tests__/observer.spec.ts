@@ -12,6 +12,7 @@ import Base from './fixtures/Base.vue';
 import ClassBase from './fixtures/ClassBase.vue';
 import Conditional from './fixtures/Conditional.vue';
 import DecoratedClassBase from './fixtures/DecoratedClassBase.vue';
+import MappedProps from './fixtures/MappedProps.vue';
 import ModelClassBase from './fixtures/ModelClassBase.vue';
 
 class Model {
@@ -257,4 +258,39 @@ test('mobx state should not be collect by vue', () => {
 
 	expect(vm.name).toBe('kuitos');
 	expect(vm.$data.hasOwnProperty('name')).toBeFalsy();
+});
+
+test('matching props should be one-way bound to model', () => {
+	const wrapper = shallowMount({
+		data() {
+			return { myAge: 100, myAgeIncrement: 100 };
+		},
+		render(this: any, h) {
+			return h('div', [
+				h(MappedProps, {
+					ref: 'actual-component',
+					props: {
+						age: this.myAge,
+						ageIncrement: this.myAgeIncrement,
+						notInModel: true,
+					},
+				}),
+			]);
+		},
+	});
+	// Reference the model data
+	const model = (wrapper.find({ ref: 'actual-component' }).vm as any).model;
+	// Props that aren't pre-existing in the model should not be set in the model
+	expect(model.notInModel).toBeUndefined();
+	// Initial values are set in the model
+	expect(model.age).toEqual(100);
+	expect(model.ageIncrement).toEqual(100);
+	// Update the parent components data and thus the child props
+	wrapper.setData({
+		myAge: 111,
+		myAgeIncrement: 200,
+	});
+	// Changes in props are also reflected in the viewmodel and rendered
+	expect(model.age).toEqual(111);
+	expect(model.ageIncrement).toEqual(200);
 });
