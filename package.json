@@ -54,6 +54,7 @@
     "vue": "^2.5.16",
     "vue-class-component": ">=4.3.0",
     "vue-jest": "^2.6.0",
+    "vue-property-decorator": "^7.0.0",
     "vue-template-compiler": "^2.5.16"
   },
   "jest": {
