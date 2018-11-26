@@ -12,6 +12,7 @@ export type VueClass<V> = { new(...args: any[]): V & Vue } & typeof Vue;
 // @formatter:off
 // tslint:disable-next-line
 const noop = () => {};
+const disposerSymbol = Symbol('disposerSymbol');
 // @formatter:on
 function observer<VC extends VueClass<Vue>>(Component: VC | ComponentOptions<Vue>): VC;
 function observer<VC extends VueClass<Vue>>(Component: VC | ComponentOptions<Vue>) {
@@ -34,13 +35,12 @@ function observer<VC extends VueClass<Vue>>(Component: VC | ComponentOptions<Vue
 	const Super = (typeof Component === 'function' && Component.prototype instanceof Vue) ? Component : Vue;
 	const ExtendedComponent = Super.extend(options);
 
-	let disposer = noop;
-
 	const { $mount, $destroy } = ExtendedComponent.prototype;
 
 	ExtendedComponent.prototype.$mount = function (this: any, ...args: any[]) {
 
 		let mounted = false;
+		this[disposerSymbol] = noop;
 
 		let nativeRenderOfVue: any;
 		const reactiveRender = () => {
@@ -62,13 +62,13 @@ function observer<VC extends VueClass<Vue>>(Component: VC | ComponentOptions<Vue
 
 		const reaction = new Reaction(`${name}.render()`, reactiveRender);
 
-		disposer = reaction.getDisposer();
+		this[disposerSymbol] = reaction.getDisposer();
 
 		return reactiveRender();
 	};
 
 	ExtendedComponent.prototype.$destroy = function (this: Vue) {
-		disposer();
+		(this as any)[disposerSymbol]();
 		$destroy.apply(this);
 	};
 

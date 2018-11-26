@@ -42,7 +42,7 @@
   },
   "devDependencies": {
     "@types/jest": "^22.2.3",
-    "@vue/test-utils": "^1.0.0-beta.22",
+    "@vue/test-utils": "1.0.0-beta.22",
     "codecov": "^3.0.2",
     "husky": "^0.14.3",
     "jest": "^23.0.0",
