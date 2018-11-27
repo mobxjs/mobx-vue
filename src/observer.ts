@@ -20,19 +20,20 @@ function observer<VC extends VueClass<Vue>>(Component: VC | ComponentOptions<Vue
 	const name = (Component as any).name || (Component as any)._componentTag || (Component.constructor && Component.constructor.name) || '<component>';
 
 	const originalOptions = typeof Component === 'object' ? Component : (Component as any).options;
+	// To not mutate the original component options, we need to construct a new one
 	const dataDefinition = originalOptions.data;
 	const options = {
-		// while parameter was component options, we could use it directly
-		// otherwise we only use its data definition
-		// we couldn't merge the options when Component was a VueClass, that will invoke the lifecycle twice after we called Component.extend
-		...typeof Component === 'object' ? Component : {},
+		...originalOptions,
 		name,
 		data: (vm: Vue) => collectDataForVue(vm, dataDefinition),
+		// overrider the cached constructor to avoid extending skip
+		// @see https://github.com/vuejs/vue/blob/6cc070063bd211229dff5108c99f7d11b6778550/src/core/global-api/extend.js#L24
+		_Ctor: {},
 	};
-	// remove the parent data definition to avoid reduplicate invocation
-	delete originalOptions.data;
 
-	const Super = (typeof Component === 'function' && Component.prototype instanceof Vue) ? Component : Vue;
+	// we couldn't use the Component as super class when Component was a VueClass, that will invoke the lifecycle twice after we called Component.extend
+	const superProto = typeof Component === 'function' && Object.getPrototypeOf(Component.prototype);
+	const Super = superProto instanceof Vue ? superProto.constructor : Vue;
 	const ExtendedComponent = Super.extend(options);
 
 	const { $mount, $destroy } = ExtendedComponent.prototype;
