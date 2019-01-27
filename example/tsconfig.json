@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "sourceMap": true,
+    "module": "es2015",
+    "moduleResolution": "node",
+    "target": "es5",
+//    "strict": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "jsx": "preserve",
+    "jsxFactory": "h"
+  },
+  "include": [
+    "./src/**/*"
+  ]
+}
