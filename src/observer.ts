@@ -73,12 +73,15 @@ function observer<VC extends VueClass<Vue>>(Component: VC | ComponentOptions<Vue
 		$destroy.apply(this);
 	};
 
-	Object.defineProperty(ExtendedComponent, 'name', {
-		writable: false,
-		value: name,
-		enumerable: false,
-		configurable: false,
-	});
+	const extendedComponentNamePropertyDescriptor = Object.getOwnPropertyDescriptor(ExtendedComponent, 'name') || {};
+	if (extendedComponentNamePropertyDescriptor.configurable === true) {
+		Object.defineProperty(ExtendedComponent, 'name', {
+			writable: false,
+			value: name,
+			enumerable: false,
+			configurable: false,
+		});
+	}
 
 	return ExtendedComponent;
 }
