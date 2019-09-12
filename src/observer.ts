@@ -7,7 +7,7 @@ import { Reaction } from 'mobx';
 import Vue, { ComponentOptions } from 'vue';
 import collectDataForVue from './collectData';
 
-export type VueClass<V> = { new(...args: any[]): V & Vue } & typeof Vue;
+export type VueClass<V> = (new(...args: any[]) => V & Vue) & typeof Vue;
 
 // @formatter:off
 // tslint:disable-next-line
