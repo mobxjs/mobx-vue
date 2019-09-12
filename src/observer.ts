@@ -25,7 +25,9 @@ function observer<VC extends VueClass<Vue>>(Component: VC | ComponentOptions<Vue
 	const options = {
 		...originalOptions,
 		name,
-		data: (vm: Vue) => collectDataForVue(vm || this, dataDefinition),
+		data: (vm: Vue) => {
+			return collectDataForVue(vm || this, dataDefinition);
+		},
 		// overrider the cached constructor to avoid extending skip
 		// @see https://github.com/vuejs/vue/blob/6cc070063bd211229dff5108c99f7d11b6778550/src/core/global-api/extend.js#L24
 		_Ctor: {},
