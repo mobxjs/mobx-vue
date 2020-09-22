@@ -24,7 +24,7 @@ function observer<VC extends VueClass<Vue>>(Component: VC | ComponentOptions<Vue
 	const dataDefinition = originalOptions.data;
 	const options = {
 		...originalOptions,
-		name,
+		// name, 
 		data(vm: Vue) {
 			return collectDataForVue(vm || this, dataDefinition);
 		},
