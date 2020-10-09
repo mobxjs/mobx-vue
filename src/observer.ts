@@ -23,8 +23,8 @@ function observer<VC extends VueClass<Vue>>(Component: VC | ComponentOptions<Vue
 	// To not mutate the original component options, we need to construct a new one
 	const dataDefinition = originalOptions.data;
 	const options = {
-		...originalOptions,
 		name,
+		...originalOptions,
 		data(vm: Vue) {
 			return collectDataForVue(vm || this, dataDefinition);
 		},
