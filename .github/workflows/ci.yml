@@ -27,8 +27,8 @@ jobs:
              ${{ runner.OS }}-node-
              ${{ runner.OS }}-
       - name: Install dependencies
-      - run: npm ci
+        run: npm ci
       - name: Run unit test
-      - run: npm run lint
+        run: npm run lint
       - name: Codecov
-      - run: npm run codecov
+        run: npm run codecov
