@@ -1,4 +1,4 @@
-name: Npm Release
+name: NPM Release
 
 on:
   release:
@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js v12.x
-      - uses: actions/setup-node@v2
+        uses: actions/setup-node@v2
         with:
           node-version: '12.x'
           registry-url: 'https://registry.npmjs.org'
