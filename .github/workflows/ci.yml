@@ -31,4 +31,6 @@ jobs:
       - name: Run unit test
         run: npm run lint
       - name: Codecov
-        run: npm run codecov
+        uses: codecov/codecov-action@v1
+        with:
+         fail_ci_if_error: true
