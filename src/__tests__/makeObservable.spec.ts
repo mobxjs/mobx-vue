@@ -4,22 +4,21 @@
  * @since 2021-06-17 18:49
  */
 import { shallowMount } from '@vue/test-utils';
-import { observable, makeObservable, computed, action } from 'mobx';
+import { action, computed, makeObservable, observable } from 'mobx';
 import Vue, { CreateElement } from 'vue';
 import Component from 'vue-class-component';
 import { Observer, observer } from '../observer';
 
-
 class Model {
+  age = 10;
+
   constructor () {
     makeObservable(this, {
       age: observable,
       computedAge: computed,
-      setAge: action.bound
+      setAge: action.bound,
     });
   }
-
-  age = 10;
 
   get computedAge() {
     return this.age + 1;
@@ -64,12 +63,12 @@ test('component lifecycle should worked well', () => {
 test('mobx state should not be collect by vue', () => {
 
   class ObservableModel {
+    name = '';
     constructor () {
       makeObservable(this, {
-        name: observable
+        name: observable,
       });
     }
-    name = '';
   }
 
   const prop = (value: string): any => () => {

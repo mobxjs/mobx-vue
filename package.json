@@ -32,9 +32,6 @@
     "url": "https://github.com/mobxjs/mobx-vue/issues"
   },
   "homepage": "https://github.com/mobxjs/mobx-vue#readme",
-  "dependencies": {
-    "tslib": "^1.9.0"
-  },
   "peerDependencies": {
     "mobx": "^6.0.0",
     "vue": "^2.0.0"
@@ -47,7 +44,6 @@
     "mobx": "^6.0.0",
     "ts-jest": "^22.4.6",
     "tslint": "^5.10.0",
-    "tslint-eslint-rules": "^5.3.1",
     "typescript": "^3.0.0",
     "vue": "^2.6.14",
     "vue-class-component": ">=7.2.6",
