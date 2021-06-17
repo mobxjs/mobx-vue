@@ -4,7 +4,7 @@
  * @since 2018-05-24 13:36
  */
 import { shallowMount } from '@vue/test-utils';
-import { action, computed, observable } from 'mobx';
+import { action, computed, observable, makeObservable } from 'mobx';
 import Vue, { CreateElement } from 'vue';
 import Component from 'vue-class-component';
 import { Observer, observer } from '../observer';
@@ -15,6 +15,10 @@ import DecoratedClassBase from './fixtures/DecoratedClassBase.vue';
 import ModelClassBase from './fixtures/ModelClassBase.vue';
 
 class Model {
+  constructor () {
+		makeObservable(this);
+	}
+
 	@observable
 	age = 10;
 
@@ -214,6 +218,10 @@ test('conditional render should be re tracked', () => {
 test('mobx state should not be collect by vue', () => {
 
 	class ObservableModel {
+    constructor () {
+			makeObservable(this);
+		}
+
 		@observable name = '';
 	}
 

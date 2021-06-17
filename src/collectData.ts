@@ -17,6 +17,7 @@ import { DefaultData } from 'vue/types/options';
  */
 export default function collectData(vm: Vue, data?: DefaultData<Vue>) {
 
+	// @ts-expect-error
 	const dataDefinition = typeof data === 'function' ? data.call(vm, vm) : (data || {});
 	const filteredData = Object.keys(dataDefinition).reduce((result: any, field) => {
 
