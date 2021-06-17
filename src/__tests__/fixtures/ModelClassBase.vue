@@ -8,11 +8,15 @@
 
 <script lang="ts">
 
-	import { action, computed, observable } from "mobx";
+	import { action, computed, observable, makeObservable } from "mobx";
 	import Vue from "vue";
 	import Component from "vue-class-component";
 
 	class Model {
+    constructor () {
+			makeObservable(this);
+		}
+
 		@observable
 		age = 10;
 

@@ -16,45 +16,34 @@
 
 <script lang="ts">
 
-	import { action, observable, makeObservable } from "mobx";
+	import { action, observable, makeAutoObservable } from "mobx";
 	import Vue from "vue";
 	import Component from "vue-class-component";
 	import { Observer } from "../../observer";
 
 	class Model {
 		constructor () {
-			makeObservable(this);
+			makeAutoObservable(this);
 		}
 
-		@observable
 		age = 10;
-
-		@observable
 		show = false;
-
-		@observable
 		count = 0;
-
-		@observable
 		nativeCount = 0;
 
-		@action.bound
-		setAge() {
+		setAge = () => {
 			this.age++;
 		}
 
-		@action.bound
-		toggle() {
+		toggle = () => {
 			this.show = !this.show;
 		}
 
-		@action.bound
-		increase() {
+		increase = () => {
 			this.count++;
 		}
 
-		@action.bound
-		nativeIncrease() {
+		nativeIncrease = () => {
 			this.nativeCount++;
 		}
 

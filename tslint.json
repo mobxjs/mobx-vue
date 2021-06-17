@@ -1,8 +1,7 @@
 {
   "defaultSeverity": "error",
   "extends": [
-	"tslint:recommended",
-	"tslint-eslint-rules"
+	"tslint:recommended"
   ],
 
   "jsRules": {},

@@ -4,7 +4,7 @@
  * @since 2018-05-24 13:36
  */
 import { shallowMount } from '@vue/test-utils';
-import { action, computed, observable } from 'mobx';
+import { action, computed, makeObservable, observable } from 'mobx';
 import Vue, { CreateElement } from 'vue';
 import Component from 'vue-class-component';
 import { Observer, observer } from '../observer';
@@ -17,6 +17,10 @@ import ModelClassBase from './fixtures/ModelClassBase.vue';
 class Model {
 	@observable
 	age = 10;
+
+  constructor () {
+		makeObservable(this);
+	}
 
 	@computed
 	get computedAge() {
@@ -215,6 +219,10 @@ test('mobx state should not be collect by vue', () => {
 
 	class ObservableModel {
 		@observable name = '';
+
+    constructor () {
+			makeObservable(this);
+		}
 	}
 
 	const prop = (value: string): any => () => {

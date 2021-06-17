@@ -8,33 +8,28 @@
 
 <script lang="ts">
 
-	import { action, computed, observable, makeObservable } from "mobx";
+	import { action, computed, observable, makeAutoObservable } from "mobx";
 	import Vue from "vue";
 	import Component from "vue-class-component";
-	import { Observer } from "../../observer";
 
 	class Model {
-		constructor () {
-			makeObservable(this);
+    constructor () {
+			makeAutoObservable(this, { }, { autoBind: true });
 		}
 
-		@observable
 		age = 10;
 
-		@computed
 		get computedAge() {
 			return this.age + 1;
 		}
 
-		@action.bound
 		setAge() {
 			this.age++;
 		}
 	}
 
-	@Observer
 	@Component
-	export default class DecoratedClassBase extends Vue {
+	export default class ModelClassBase extends Vue {
 		model = new Model();
 	}
 </script>
