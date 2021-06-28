@@ -1,6 +1,6 @@
 {
   "name": "mobx-vue",
-  "version": "2.1.0-alpha.1",
+  "version": "2.1.0-alpha.3",
   "description": "Vue bindings for MobX",
   "main": "./lib/index.js",
   "module": "./esm/index.js",
