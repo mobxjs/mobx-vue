@@ -1,8 +1,9 @@
 name: NPM Release
 
 on:
-  release:
-    types: [created]
+  push:
+    tags:
+      - v2.1.0-alpha.*
 
 jobs:
   Release:
@@ -23,7 +24,7 @@ jobs:
       - name: open dist
         run: cd dist
       - name: Npm publish
-        run: npm publish
+        run: npm publish --tag next
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
       
