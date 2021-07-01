@@ -21,10 +21,8 @@ jobs:
         run: npm run build
       - name: cp file
         run: cp {package.json,README.md,LICENSE,.npmignore} dist
-      - name: open dist
-        run: cd dist
       - name: Npm publish
-        run: npm publish --tag next
+        run: npm publish ./dist --tag next
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
       
