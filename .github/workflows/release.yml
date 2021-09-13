@@ -1,9 +1,9 @@
-name: NPM Release Alpha
+name: NPM Release
 
 on:
   push:
     tags:
-      - v2.1.0-alpha.*
+      - v2.*.*
 
 jobs:
   Release:
@@ -22,7 +22,7 @@ jobs:
       - name: cp file
         run: cp {package.json,README.md,LICENSE,.npmignore} dist
       - name: Npm publish
-        run: npm publish ./dist --tag next
+        run: npm publish ./dist
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
       
