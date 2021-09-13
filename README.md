@@ -1,17 +1,21 @@
-# 🚨🚨 [RFC] mobx-vue v3 is opening 🚨🚨
-We plan to support mobx6 and vue3 in the next major version(v3), we need community feedback and suggestion ! RFC discussion link [RFC mobx-vue v3](https://github.com/mobxjs/mobx-vue/issues/60) , any idea and disscussion welcome !
-
 # mobx-vue
 
-[![npm version](https://img.shields.io/npm/v/mobx-vue.svg?style=flat-square)](https://www.npmjs.com/package/mobx-vue)
-[![coverage](https://img.shields.io/codecov/c/github/mobxjs/mobx-vue.svg?style=flat-square)](https://codecov.io/gh/mobxjs/mobx-vue)
-[![npm downloads](https://img.shields.io/npm/dt/mobx-vue.svg?style=flat-square)](https://www.npmjs.com/package/mobx-vue)
-[![Build Status](https://img.shields.io/travis/mobxjs/mobx-vue.svg?style=flat-square)](https://travis-ci.org/mobxjs/mobx-vue)
+[![Build Status](https://github.com/mobxjs/mobx-vue/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/stylus/stylus/actions?query=branch%3Amaster)
+[![npm version](https://img.shields.io/npm/v/mobx-vue.svg)](https://www.npmjs.com/package/mobx-vue)
+[![coverage](https://img.shields.io/codecov/c/github/mobxjs/mobx-vue.svg)](https://codecov.io/gh/mobxjs/mobx-vue)
+[![npm downloads](https://img.shields.io/npm/dt/mobx-vue.svg)](https://www.npmjs.com/package/mobx-vue)
 
 Vue bindings for MobX, inspired by [mobx-react](https://github.com/mobxjs/mobx-react)
 
 ![logo](https://github.com/mobxjs/mobx-vue/blob/master/logo.png?raw=true)
 
+## Support Table
+| package | mobx v6 | mobx v2/v3/v4/v5 | vue2 | vue3 | 
+| ------  | ------- | ---------------- | ---- | ---- |
+| [mobx-vue](https://github.com/mobxjs/mobx-vue) | >= 2.1.0 | < 2.1.0 | * | - |
+| [mobx-vue-lite](https://github.com/mobxjs/mobx-vue-lite) | * | - | - | * |
+> `*` means `all` and `-` means `none`
+ 
 ## Installation
 
 ```bash
