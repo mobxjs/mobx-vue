@@ -5,7 +5,7 @@
 [![coverage](https://img.shields.io/codecov/c/github/mobxjs/mobx-vue.svg)](https://codecov.io/gh/mobxjs/mobx-vue)
 [![npm downloads](https://img.shields.io/npm/dt/mobx-vue.svg)](https://www.npmjs.com/package/mobx-vue)
 
-Vue bindings for MobX, inspired by [mobx-react](https://github.com/mobxjs/mobx-react)
+Vue2 bindings for MobX, inspired by [mobx-react](https://github.com/mobxjs/mobx-react). Looking for Vue3 support? Please look here [mobx-vue-lite](https://github.com/mobxjs/mobx-vue-lite)
 
 ![logo](https://github.com/mobxjs/mobx-vue/blob/master/logo.png?raw=true)
 
