@@ -65,7 +65,8 @@ function observer<VC extends VueClass<Vue>>(Component: VC | ComponentOptions<Vue
 
 		const reaction = new Reaction(`${name}.render()`, reactiveRender);
 
-		this[disposerSymbol] = reaction.getDisposer_();
+		// @ts-expect-error
+		this[disposerSymbol] = reaction.getDisposer_?.() || reaction.getDisposer?.();
 
 		return reactiveRender();
 	};
