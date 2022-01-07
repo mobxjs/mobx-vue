@@ -33,7 +33,7 @@
   },
   "homepage": "https://github.com/mobxjs/mobx-vue#readme",
   "peerDependencies": {
-    "mobx": "^6.0.0",
+    "mobx": "^2.0.0 || ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0",
     "vue": "^2.0.0"
   },
   "devDependencies": {
