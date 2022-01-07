@@ -12,7 +12,7 @@ Vue2 bindings for MobX, inspired by [mobx-react](https://github.com/mobxjs/mobx-
 ## Support Table
 | package | mobx v6 | mobx v2/v3/v4/v5 | vue2 | vue3 | 
 | ------  | ------- | ---------------- | ---- | ---- |
-| [mobx-vue](https://github.com/mobxjs/mobx-vue) | >= 2.1.0 | < 2.1.0 | * | - |
+| [mobx-vue](https://github.com/mobxjs/mobx-vue) | >= v2.1.0 | * (exclude v2.1.0) | * | - |
 | [mobx-vue-lite](https://github.com/mobxjs/mobx-vue-lite) | * | - | - | * |
 > `*` means `all` and `-` means `none`
  
@@ -27,10 +27,6 @@ or
 ```bash
 yarn add mobx-vue
 ```
-
-## Requirement
-* Vue >= 2.0.0
-* MobX >= 2.0.0, compatible with MobX 5!
 
 ## Why mobx-vue 
 
